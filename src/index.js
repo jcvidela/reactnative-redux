@@ -1,8 +1,8 @@
 import React from "react";
 import { StyleSheet, View, FlatList } from "react-native";
 import { connect } from 'react-redux';
-import { complete } from './reducers/todos';
-import { ListItem } from './components';
+import { complete, submit } from './reducers/todos';
+import { ListItem, Input } from './components';
 import { StatusBar } from "expo-status-bar";
 
 const styles = StyleSheet.create({
@@ -18,15 +18,25 @@ const styles = StyleSheet.create({
   }
 });
 
-const App = ({ data, complete }) => {
+const App = ({ data, complete, submit }) => {
+  const [inputText, setInputText] = React.useState('');
+  
   return (
     <View style={styles.container}>
+      <Input
+        value={inputText}
+        handleChangeText={(val) => setInputText(val)} 
+        handleSubmit={() => {
+          submit(inputText);
+          setInputText('');
+        }} 
+      />
       <FlatList 
         style={styles.list}
         data={data}
         renderItem={({ item }) => (
           <ListItem 
-            handlePress={() => complete(item.id)} 
+            handlePress={() => complete(item.id)}
             desc={item.desc}
             completed={item.completed}
           />
@@ -43,7 +53,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  complete: (id) => dispatch(complete(id))
+  complete: (id) => dispatch(complete(id)),
+  submit: (val) => dispatch(submit(val)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
