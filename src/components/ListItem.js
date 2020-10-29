@@ -13,12 +13,20 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 18,
   },
+  striked: {
+    textDecorationLine: 'line-through',
+    textDecorationStyle: 'solid'
+  }
 });
 
-export default ({ desc, handlePress }) => {
+export default ({ desc, completed, handlePress }) => {
   return (
     <TouchableOpacity onPress={handlePress} style={styles.container}>
-     <Text style={styles.text}>{desc}</Text>
+     {
+       completed ?
+       <Text style={[styles.text, styles.striked]}>{desc}</Text> :
+       <Text style={styles.text}>{desc}</Text>
+     }
     </TouchableOpacity>
   );
 };
