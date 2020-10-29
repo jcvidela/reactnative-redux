@@ -1,7 +1,8 @@
 import React from "react";
 import { StyleSheet, View, FlatList } from "react-native";
-import { StatusBar } from "expo-status-bar";
+import { connect } from 'react-redux';
 import { ListItem } from './components';
+import { StatusBar } from "expo-status-bar";
 
 const styles = StyleSheet.create({
   container: {
@@ -16,13 +17,7 @@ const styles = StyleSheet.create({
   }
 });
 
-export default () => {
-
-  const data = [
-    { id: '1', desc: 'todo 1', completed: false },
-    { id: '2', desc: 'todo 2', completed: false },
-    { id: '3', desc: 'todo 3', completed: false },
-  ]
+const App = ({ data }) => {
   return (
     <View style={styles.container}>
       <FlatList 
@@ -40,3 +35,9 @@ export default () => {
     </View>
   );
 };
+
+const mapStateToProps = (state) => {
+  return { data: state.todos };
+};
+
+export default connect(mapStateToProps)(App);
